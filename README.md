@@ -31,3 +31,19 @@ docker build -t spring-boot .
 ```
 docker run -it -p 8080:8080 spring-boot
 ```
+
+## Docker Compose
+
+### Build spring-boot image
+
+```
+cd spring-boot
+./gradlew build
+```
+
+### docker-compose up
+
+```
+cd ..
+docker-compose up
+```

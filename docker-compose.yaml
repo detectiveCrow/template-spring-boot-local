@@ -8,23 +8,27 @@ services:
       - "8080:8080"
     networks:
       - local
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/test?dbautoReconnect=true&failOverReadOnly=false&maxReconnects=10
     depends_on:
       mysql:
         condition: service_healthy
   mysql:
     image: mysql:8
-    restart: always
+    ports:
+      - "3306:3306"
     networks:
       - local
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
+      timeout: 5s
       retries: 10
 
 networks:
   local:
-    name: host
-    external: true
