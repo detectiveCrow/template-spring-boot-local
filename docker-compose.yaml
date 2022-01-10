@@ -1,0 +1,30 @@
+version: "3"
+services:
+  spring-boot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - local
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql:8
+    restart: always
+    networks:
+      - local
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=test
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+
+networks:
+  local:
+    name: host
+    external: true
